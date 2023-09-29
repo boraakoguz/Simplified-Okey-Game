@@ -144,5 +144,6 @@ public class ApplicationMain {
                 }
             }
         }
+        sc.close();
     }
 }

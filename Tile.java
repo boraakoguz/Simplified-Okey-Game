@@ -14,11 +14,10 @@ public class Tile {
         this.color = color;
     }
 
-    /*
-     * TODO: should check if the given tile t and this tile contain the same color and value
-     * return true if they are matching, false otherwise
-     */
     public boolean matchingTiles(Tile t) {
+        if(this.color == t.color && this.value == t.value){
+            return true;
+        }
         return false;
     }
 
@@ -72,8 +71,11 @@ public class Tile {
         else if(color == 'R') {
             return 2;
         }
-        else {
+        else if(color == 'K') {
             return 3;
+        }
+        else {
+            return 4;
         }
     }
 

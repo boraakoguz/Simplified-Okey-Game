@@ -33,7 +33,9 @@ public class OkeyGame {
      * this method assumes the tiles are already sorted
      */
     public void distributeTilesToPlayers() {
-
+        for (Player player : players) {
+            
+        }
     }
 
     /*

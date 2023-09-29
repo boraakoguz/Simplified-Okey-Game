@@ -1,3 +1,4 @@
+
 public class Player {
     String playerName;
     Tile[] playerTiles;
@@ -54,15 +55,43 @@ public class Player {
 
         sortTilesColorFirst();
         tilePosition = findPositionOfTile(t);
-
-        // TODO: find the longest chain starting from tilePosition going left and right
         int longestChainColorFirst = 0;
+        int offset = 0;
+        while(tilePosition-offset>0 || tilePosition+offset < playerTiles.length){
+            if(offset == 0){
+                continue;
+            }
+            if(t.canFormChainWith(playerTiles[tilePosition + offset]) == 1 && t.canFormChainWith(playerTiles[tilePosition - offset]) == 1){
+                longestChainColorFirst +=2;
+            }
+            else if(t.canFormChainWith(playerTiles[tilePosition + offset]) == 1 || t.canFormChainWith(playerTiles[tilePosition - offset]) == 1){
+                longestChainColorFirst ++;
+            }
+            else{
+                break;
+            }
+        }
+
 
         sortTilesValueFirst();
         tilePosition = findPositionOfTile(t);
-        
-        // TODO: find the longest chain starting from tilePosition going left and right
         int longestChainValueFirst = 0;
+        offset = 0;
+        while(tilePosition-offset>0 || tilePosition+offset < playerTiles.length){
+            if(offset == 0){
+                continue;
+            }
+            if(t.canFormChainWith(playerTiles[tilePosition + offset]) == 1 && t.canFormChainWith(playerTiles[tilePosition - offset]) == 1){
+                longestChainValueFirst +=2;
+            }
+            else if(t.canFormChainWith(playerTiles[tilePosition + offset]) == 1 || t.canFormChainWith(playerTiles[tilePosition - offset]) == 1){
+                longestChainValueFirst ++;
+            }
+            else{
+                break;
+            }
+        }
+        
 
 
         if(longestChainColorFirst > longestChainValueFirst) {
@@ -73,24 +102,24 @@ public class Player {
         }
     }
 
-    /*
-     * TODO: removes and returns the tile in given index
-     */
     public Tile getAndRemoveTile(int index) {
-        return null;
+        Tile targetTile = playerTiles[index];
+        Tile Xtile = new Tile(0,'X');
+        playerTiles[index] = Xtile;
+        numberOfTiles--;
+        return targetTile;
     }
 
-    /*
-     * TODO: adds the given tile at the end of playerTiles array, should also
-     * update numberOfTiles accordingly. Make sure the player does not try to
-     * have more than 15 tiles at a time
-     */
     public void addTile(Tile t) {
-
+        if(numberOfTiles < 15){
+            sortTilesColorFirst();
+            playerTiles[14] = t;
+            numberOfTiles++;
+        }
     }
 
     /*
-     * TODO: uses bubble sort to sort playerTiles in increasing color and value
+     * uses bubble sort to sort playerTiles in increasing color and value
      * value order: 1 < 2 < ... < 12 < 13
      * color order: Y < B < R < K
      * color is more important in this ordering, a sorted example:
@@ -99,11 +128,20 @@ public class Player {
      * you are allowed to use Collections.sort method
      */
     public void sortTilesColorFirst() {
-        
+        Tile temp;
+        for(int i = 0; i<playerTiles.length-1;i++ ){
+            for(int j = 0; j<playerTiles.length - i - 1;j++){
+                if(playerTiles[j].compareToColorFirst(playerTiles[j+1]) == 1){
+                    temp = playerTiles[j];
+                    playerTiles[j] = playerTiles[j+1];
+                    playerTiles[j+1] = temp;
+                }
+            }
+        }
     }
 
     /*
-     * TODO: uses bubble sort to sort playerTiles in increasing value and color
+     * uses bubble sort to sort playerTiles in increasing value and color
      * value order: 1 < 2 < ... < 12 < 13
      * color order: Y < B < R < K
      * value is more important in this ordering, a sorted example:
@@ -112,7 +150,16 @@ public class Player {
      * you are allowed to use Collections.sort method
      */
     public void sortTilesValueFirst() {
-
+        Tile temp;
+        for(int i = 0; i<playerTiles.length-1;i++ ){
+            for(int j = 0; j<playerTiles.length - i - 1;j++){
+                if(playerTiles[j].compareToValueFirst(playerTiles[j+1]) == 1){
+                    temp = playerTiles[j];
+                    playerTiles[j] = playerTiles[j+1];
+                    playerTiles[j+1] = temp;
+                }
+            }
+        }
     }
 
     public int findPositionOfTile(Tile t) {
