@@ -1,7 +1,12 @@
+import java.util.ArrayList;
+import java.util.Random;
+
 public class OkeyGame {
 
     Player[] players;
     Tile[] tiles;
+
+    ArrayList <Tile>  Board_Tiles= new ArrayList<>(); 
 
     Tile lastDiscardedTile;
 
@@ -33,9 +38,32 @@ public class OkeyGame {
      * this method assumes the tiles are already sorted
      */
     public void distributeTilesToPlayers() {
+        shuffleTiles();
+        for(int i=0;i<4;i++){
+            if(i==0){
+                for(int k=0;k<15;k++){
+                    players[0].playerTiles[k]=this.tiles[k];
+                }
+            }
+            else{
+                for(int k=0;k<14;k++){
+                    players[i].playerTiles[k]=this.tiles[k+14*i+1];
+                }
+            }
+        }
+        for(int i=57;i<104;i++){
+            this.Board_Tiles.add(tiles[i]);
+        }
+        // 0-14
+        // 15-28
+        // 29-42
+        // 43-56
+        // 57
+        /* 
         for (Player player : players) {
             
         }
+        */
     }
 
     /*
@@ -53,6 +81,10 @@ public class OkeyGame {
      * it should return the toString method of the tile so that we can print what we picked
      */
     public String getTopTile() {
+        Tile t;
+        t=Board_Tiles.get(Board_Tiles.size());
+        Board_Tiles.remove(Board_Tiles.size()-1);
+
         return null;
     }
 
@@ -60,7 +92,15 @@ public class OkeyGame {
      * TODO: should randomly shuffle the tiles array before game starts
      */
     public void shuffleTiles() {
-
+        Random r=new Random();
+        int ran_num;
+        Tile Temp_Tile;
+        for(int i=0;i<104;i++){
+            ran_num=r.nextInt(104);
+            Temp_Tile=tiles[ran_num];
+            tiles[ran_num]=tiles[i];
+            tiles[i]=Temp_Tile;
+        }
     }
 
     /*
@@ -87,7 +127,14 @@ public class OkeyGame {
      * the current status. Print whether computer picks from tiles or discarded ones.
      */
     public void pickTileForComputer() {
-
+        Random r= new Random();
+        int c=r.nextInt(2);
+        if(c==0){
+            getTopTile();
+        }
+        else{
+            getLastDiscardedTile();
+        }
     }
 
     /*
@@ -98,8 +145,40 @@ public class OkeyGame {
      * this method should print what tile is discarded since it should be
      * known by other players
      */
-    public void discardTileForComputer() {
-
+    public void discardTileForComputer(Player p) {
+        boolean e1=false;
+        boolean e2=false;
+        for(int i=0;i<15;i++){
+            for(int k=i+1;k<15;k++){
+                if(p.playerTiles[i].equals(p.playerTiles[k])){
+                    // p.playerTiles[i]; 
+                    e1=true;
+                    break;
+                }
+            }
+            if(e1==true){
+                break;
+            }
+        }
+        if(e1==false){
+            for(int i=0;i<15;i++){
+                for(int k=i+1;k<15;k++){
+                    if(p.playerTiles[i].canFormChainWith(p.playerTiles[k])==0){
+                        // p.playerTiles[i]; 
+                        e2=true;
+                        break;
+                    }
+                }
+                if(e2=true){
+                    break;
+                }
+            }   
+        }
+        else if(e2==false){
+            Random r= new Random();
+            int rn=r.nextInt(15);
+            // p.playerTiles[rn];
+        }
     }
 
     /*
