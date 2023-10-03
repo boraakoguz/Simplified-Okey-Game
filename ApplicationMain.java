@@ -108,14 +108,21 @@ public class ApplicationMain {
 
                 if(gameContinues) {
                     // if game continues we need to discard a tile using the given index by the player
-                    System.out.println("Which tile you will discard?");
-                    System.out.print("Discard the tile in index: ");
-                    playerChoice = sc.nextInt();
+                    while(true){
+                        System.out.println("Which tile you will discard?");
+                        System.out.print("Discard the tile in index: ");
+                        playerChoice = sc.nextInt();
 
-                    // TODO: make sure the given index is correct, should be 0 <= index <= 14
-
-                    game.discardTile(playerChoice);
-                    game.passTurnToNextPlayer();
+                        // TODO: make sure the given index is correct, should be 0 <= index <= 14
+                        if(playerChoice>=0 && playerChoice <15){
+                            game.discardTile(playerChoice);
+                            game.passTurnToNextPlayer();
+                            break;
+                        }
+                        else{
+                            System.out.print("Please enter a value between [0,14] ");
+                        }
+                    }
                 }
                 else{
                     // if we finish the hand we win
