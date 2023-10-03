@@ -6,6 +6,9 @@ public class OkeyGame {
     Player[] players;
     Tile[] tiles;
 
+    Tile Discarted_Tile;
+    int game_tour;
+    int discarted_index;
     ArrayList <Tile>  Board_Tiles= new ArrayList<>(); 
 
     Tile lastDiscardedTile;
@@ -13,6 +16,7 @@ public class OkeyGame {
     int currentPlayerIndex = 0;
 
     public OkeyGame() {
+        this.game_tour=0;
         players = new Player[4];
     }
 
@@ -42,23 +46,18 @@ public class OkeyGame {
         for(int i=0;i<4;i++){
             if(i==0){
                 for(int k=0;k<15;k++){
-                    players[0].playerTiles[k]=this.tiles[k];
+                    players[3].playerTiles[k]=this.tiles[k];
                 }
             }
             else{
                 for(int k=0;k<14;k++){
-                    players[i].playerTiles[k]=this.tiles[k+14*i+1];
+                    players[i-1].playerTiles[k]=this.tiles[k+14*i+1];
                 }
             }
         }
         for(int i=57;i<104;i++){
             this.Board_Tiles.add(tiles[i]);
         }
-        // 0-14
-        // 15-28
-        // 29-42
-        // 43-56
-        // 57
         /* 
         for (Player player : players) {
             
@@ -72,7 +71,8 @@ public class OkeyGame {
      * it should return the toString method of the tile so that we can print what we picked
      */
     public String getLastDiscardedTile() {
-        return null;
+        players[(game_tour-1)%4].playerTiles[discarted_index]=Discarted_Tile;
+        return Discarted_Tile.toString();
     }
 
     /*
@@ -82,10 +82,10 @@ public class OkeyGame {
      */
     public String getTopTile() {
         Tile t;
-        t=Board_Tiles.get(Board_Tiles.size());
+        t=Board_Tiles.get(Board_Tiles.size()-1);
         Board_Tiles.remove(Board_Tiles.size()-1);
-
-        return null;
+        players[(game_tour-1)%4].playerTiles[discarted_index]=t;
+        return t.toString();
     }
 
     /*
@@ -116,6 +116,9 @@ public class OkeyGame {
      * for this simplified version
      */
     public boolean didGameFinish() {
+        for(int i=0;i<15;i++){
+
+        }
         return false;
     }
 
@@ -126,7 +129,7 @@ public class OkeyGame {
      * You may choose randomly or consider if the discarded tile is useful for
      * the current status. Print whether computer picks from tiles or discarded ones.
      */
-    public void pickTileForComputer() {
+    public void pickTileForComputer() {        
         Random r= new Random();
         int c=r.nextInt(2);
         if(c==0){
@@ -145,13 +148,15 @@ public class OkeyGame {
      * this method should print what tile is discarded since it should be
      * known by other players
      */
-    public void discardTileForComputer(Player p) {
+    public void discardTileForComputer() {
         boolean e1=false;
         boolean e2=false;
         for(int i=0;i<15;i++){
             for(int k=i+1;k<15;k++){
-                if(p.playerTiles[i].equals(p.playerTiles[k])){
-                    // p.playerTiles[i]; 
+                if(players[(game_tour-1)%4].playerTiles[i].equals(players[(game_tour-1)%4].playerTiles[k])){
+                    discarted_index=i;
+                    Discarted_Tile=players[(game_tour-1)%4].playerTiles[discarted_index];
+                    players[(game_tour-1)%4].playerTiles[i]=null; 
                     e1=true;
                     break;
                 }
@@ -163,8 +168,10 @@ public class OkeyGame {
         if(e1==false){
             for(int i=0;i<15;i++){
                 for(int k=i+1;k<15;k++){
-                    if(p.playerTiles[i].canFormChainWith(p.playerTiles[k])==0){
-                        // p.playerTiles[i]; 
+                    if(players[(game_tour-1)%4].playerTiles[i].canFormChainWith(players[(game_tour-1)%4].playerTiles[k])==0){
+                        discarted_index=i;
+                        Discarted_Tile=players[(game_tour-1)%4].playerTiles[discarted_index];
+                        players[(game_tour-1)%4].playerTiles[i]=null; 
                         e2=true;
                         break;
                     }
@@ -177,7 +184,9 @@ public class OkeyGame {
         else if(e2==false){
             Random r= new Random();
             int rn=r.nextInt(15);
-            // p.playerTiles[rn];
+            discarted_index=rn;
+            Discarted_Tile=players[(game_tour-1)%4].playerTiles[discarted_index];
+            players[(game_tour-1)%4].playerTiles[rn]=null;
         }
     }
 
@@ -187,7 +196,10 @@ public class OkeyGame {
      * that player's tiles
      */
     public void discardTile(int tileIndex) {
-
+        this.game_tour++;
+        discarted_index=tileIndex;
+        Discarted_Tile=players[0].playerTiles[discarted_index];
+        players[0].playerTiles[tileIndex]=null;
     }
 
     public void currentPlayerSortTilesColorFirst() {
