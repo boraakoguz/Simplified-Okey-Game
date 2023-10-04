@@ -46,12 +46,12 @@ public class OkeyGame {
         for(int i=0;i<4;i++){
             if(i==0){
                 for(int k=0;k<15;k++){
-                    players[3].playerTiles[k]=this.tiles[k];
+                    players[0].playerTiles[k]=this.tiles[k];
                 }
             }
             else{
                 for(int k=0;k<14;k++){
-                    players[i-1].playerTiles[k]=this.tiles[k+14*i+1];
+                    players[i].playerTiles[k]=this.tiles[k+14*i+1];
                 }
             }
         }
