@@ -13,7 +13,7 @@ public class OkeyGame {
 
     Tile lastDiscardedTile;
 
-    int currentPlayerIndex = -1;
+    int currentPlayerIndex = 0;
     
     public OkeyGame() {
         players = new Player[4];
@@ -116,10 +116,8 @@ public class OkeyGame {
      * for this simplified version
      */
     public boolean didGameFinish() {
-        this.currentPlayerIndex+=1;
-        this.currentPlayerIndex=this.currentPlayerIndex%4;
-        
-        
+        return false;
+        /* 
         int[] chain=new int[14];
         int[] chain_nums=new int[3];
         chain=players[currentPlayerIndex].calculateLongestChainPerTile();
@@ -144,7 +142,7 @@ public class OkeyGame {
         else{
             return false;
         }
-        
+        */
         
     }
 
@@ -164,7 +162,6 @@ public class OkeyGame {
         else{
             getLastDiscardedTile();
         }
-        System.out.println(players[currentPlayerIndex].playerTiles[14]);
     }
 
     /*
@@ -178,7 +175,8 @@ public class OkeyGame {
     public void discardTileForComputer() {
         int min=41;
         int min_index=41;
-        for(int i=0;i<14;i++){
+        for(int i=0;i<15;i++){
+            System.out.println(players[currentPlayerIndex].playerTiles[13]+" "+players[currentPlayerIndex].playerTiles[14]);
             if(min>players[currentPlayerIndex].findLongestChainOf(players[currentPlayerIndex].playerTiles[i])){
                 min=players[currentPlayerIndex].findLongestChainOf(players[currentPlayerIndex].playerTiles[i]);
                 min_index=i;
@@ -222,8 +220,7 @@ public class OkeyGame {
     }
 
     public int getCurrentPlayerIndex() {
-        currentPlayerIndex+=1;
-        currentPlayerIndex=currentPlayerIndex%4;
+        
         return currentPlayerIndex;
     }
 
