@@ -57,11 +57,6 @@ public class OkeyGame {
         for(int i=57;i<104;i++){
             this.Board_Tiles.add(tiles[i]);
         }
-        /* 
-        for (Player player : players) {
-            
-        }
-        */
     }
     
 
@@ -116,8 +111,6 @@ public class OkeyGame {
      * for this simplified version
      */
     public boolean didGameFinish() {
-        return false;
-        /* 
         int[] chain=new int[14];
         int[] chain_nums=new int[3];
         chain=players[currentPlayerIndex].calculateLongestChainPerTile();
@@ -142,7 +135,7 @@ public class OkeyGame {
         else{
             return false;
         }
-        */
+        
         
     }
 
@@ -176,7 +169,6 @@ public class OkeyGame {
         int min=41;
         int min_index=41;
         for(int i=0;i<15;i++){
-            System.out.println(players[currentPlayerIndex].playerTiles[13]+" "+players[currentPlayerIndex].playerTiles[14]);
             if(min>players[currentPlayerIndex].findLongestChainOf(players[currentPlayerIndex].playerTiles[i])){
                 min=players[currentPlayerIndex].findLongestChainOf(players[currentPlayerIndex].playerTiles[i]);
                 min_index=i;

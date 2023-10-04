@@ -52,44 +52,45 @@ public class Player {
      */
     public int findLongestChainOf(Tile t) {
         int tilePosition;
-
         sortTilesColorFirst();
         tilePosition = findPositionOfTile(t);
         int longestChainColorFirst = 0;
-        int offset = 0;
+        int offset = 1;
         while(tilePosition-offset>0 || tilePosition+offset < playerTiles.length){
-            if(offset == 0){
-                continue;
-            }
-            if(t.canFormChainWith(playerTiles[tilePosition + offset]) == 1 && t.canFormChainWith(playerTiles[tilePosition - offset]) == 1){
+            if((tilePosition - offset > 0 && tilePosition + offset < playerTiles.length) && t.canFormChainWith(playerTiles[tilePosition + offset]) == 1 && t.canFormChainWith(playerTiles[tilePosition - offset]) == 1){
                 longestChainColorFirst +=2;
             }
-            else if(t.canFormChainWith(playerTiles[tilePosition + offset]) == 1 || t.canFormChainWith(playerTiles[tilePosition - offset]) == 1){
+            else if(tilePosition + offset < playerTiles.length && t.canFormChainWith(playerTiles[tilePosition + offset]) == 1){
                 longestChainColorFirst ++;
+            }
+            else if(tilePosition-offset > 0 && t.canFormChainWith(playerTiles[tilePosition - offset]) == 1){
+                longestChainColorFirst++;
             }
             else{
                 break;
             }
+            offset++;
         }
 
 
         sortTilesValueFirst();
         tilePosition = findPositionOfTile(t);
         int longestChainValueFirst = 0;
-        offset = 0;
+        offset = 1;
         while(tilePosition-offset>0 || tilePosition+offset < playerTiles.length){
-            if(offset == 0){
-                continue;
-            }
-            if(t.canFormChainWith(playerTiles[tilePosition + offset]) == 1 && t.canFormChainWith(playerTiles[tilePosition - offset]) == 1){
+            if((tilePosition - offset > 0 && tilePosition + offset < playerTiles.length) && t.canFormChainWith(playerTiles[tilePosition + offset]) == 1 && t.canFormChainWith(playerTiles[tilePosition - offset]) == 1){
                 longestChainValueFirst +=2;
             }
-            else if(t.canFormChainWith(playerTiles[tilePosition + offset]) == 1 || t.canFormChainWith(playerTiles[tilePosition - offset]) == 1){
+            else if(tilePosition + offset < playerTiles.length && t.canFormChainWith(playerTiles[tilePosition + offset]) == 1){
                 longestChainValueFirst ++;
+            }
+            else if(tilePosition-offset > 0 && t.canFormChainWith(playerTiles[tilePosition - offset]) == 1){
+                longestChainValueFirst++;
             }
             else{
                 break;
             }
+            offset++;
         }
         
 
