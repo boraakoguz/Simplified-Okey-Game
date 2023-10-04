@@ -9,6 +9,9 @@ public class Tile {
      * Values can be in the range [1,13]. There are two tiles of each color value
      * combination (13 * 2 * 4) = 104 tiles, false jokers are not included in this game.
      */
+    public Tile(){
+        
+    }
     public Tile(int value, char color) {
         this.value = value;
         this.color = color;
@@ -22,7 +25,10 @@ public class Tile {
     }
 
     public int compareToColorFirst(Tile t) {
-        if(colorNameToInt() < t.colorNameToInt()) {
+        if(t==null){
+            return 0;
+        }
+        else if(colorNameToInt() < t.colorNameToInt()) {
             return -1;
         }
         else if(colorNameToInt() > t.colorNameToInt()) {

@@ -7,7 +7,7 @@ public class Player {
     public Player(String name) {
         setName(name);
         playerTiles = new Tile[15]; // there are at most 15 tiles a player owns at any time
-        numberOfTiles = 0; // currently this player owns 0 tiles, will pick tiles at the beggining of the game
+        numberOfTiles = 15; // currently this player owns 0 tiles, will pick tiles at the beggining of the game
     }
 
     /*
@@ -104,12 +104,12 @@ public class Player {
 
     public Tile getAndRemoveTile(int index) {
         Tile targetTile = playerTiles[index];
-        Tile Xtile = new Tile(0,'X');
-        playerTiles[index] = Xtile;
+        //Tile Xtile = new Tile(0,'X');
+        playerTiles[index] = null;
         numberOfTiles--;
         return targetTile;
     }
-
+    
     public void addTile(Tile t) {
         if(numberOfTiles < 15){
             sortTilesColorFirst();
@@ -117,6 +117,7 @@ public class Player {
             numberOfTiles++;
         }
     }
+    
 
     /*
      * uses bubble sort to sort playerTiles in increasing color and value
@@ -131,11 +132,13 @@ public class Player {
         Tile temp;
         for(int i = 0; i<playerTiles.length-1;i++ ){
             for(int j = 0; j<playerTiles.length - i - 1;j++){
-                if(playerTiles[j].compareToColorFirst(playerTiles[j+1]) == 1){
-                    temp = playerTiles[j];
-                    playerTiles[j] = playerTiles[j+1];
-                    playerTiles[j+1] = temp;
-                }
+               
+                    if(playerTiles[j].compareToColorFirst(playerTiles[j+1]) == 1){
+                        temp = playerTiles[j];
+                        playerTiles[j] = playerTiles[j+1];
+                        playerTiles[j+1] = temp;
+                    }
+                
             }
         }
     }
@@ -153,29 +156,35 @@ public class Player {
         Tile temp;
         for(int i = 0; i<playerTiles.length-1;i++ ){
             for(int j = 0; j<playerTiles.length - i - 1;j++){
-                if(playerTiles[j].compareToValueFirst(playerTiles[j+1]) == 1){
-                    temp = playerTiles[j];
-                    playerTiles[j] = playerTiles[j+1];
-                    playerTiles[j+1] = temp;
-                }
+               
+                    if(playerTiles[j].compareToValueFirst(playerTiles[j+1]) == 1){
+                        temp = playerTiles[j];
+                        playerTiles[j] = playerTiles[j+1];
+                        playerTiles[j+1] = temp;
+                    }
+                
             }
         }
     }
 
     public int findPositionOfTile(Tile t) {
         int tilePosition = -1;
-        for (int i = 0; i < numberOfTiles; i++) {
-            if(playerTiles[i].matchingTiles(t)) {
-                tilePosition = i;
-            }
+        for (int i = 0; i < this.numberOfTiles; i++) {
+                if(playerTiles[i].matchingTiles(t)) {
+                    tilePosition = i;
+                }
+            
         }
         return tilePosition;
     }
 
     public void displayTiles() {
         System.out.println(playerName + "'s Tiles:");
-        for (int i = 0; i < numberOfTiles; i++) {
-            System.out.print(playerTiles[i].toString() + " ");
+
+        for (int i = 0; i < this.numberOfTiles; i++) {
+            if(playerTiles[i]!=null){
+                System.out.print(playerTiles[i].toString() + " ");
+            }
         }
         System.out.println();
     }

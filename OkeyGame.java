@@ -7,16 +7,15 @@ public class OkeyGame {
     Tile[] tiles;
 
 
-    int game_tour;
+    
     int discarted_index;
     ArrayList <Tile>  Board_Tiles= new ArrayList<>(); 
 
     Tile lastDiscardedTile;
 
-    int currentPlayerIndex = 0;
+    int currentPlayerIndex = -1;
     
     public OkeyGame() {
-        this.game_tour=0;
         players = new Player[4];
     }
 
@@ -64,6 +63,7 @@ public class OkeyGame {
         }
         */
     }
+    
 
     /*
      * TODO: get the last discarded tile for the current player
@@ -71,7 +71,7 @@ public class OkeyGame {
      * it should return the toString method of the tile so that we can print what we picked
      */
     public String getLastDiscardedTile() {
-        players[(game_tour-1)%4].playerTiles[14]=lastDiscardedTile;
+        players[currentPlayerIndex].playerTiles[14]=lastDiscardedTile;
         return lastDiscardedTile.toString();
     }
 
@@ -84,7 +84,7 @@ public class OkeyGame {
         Tile t;
         t=Board_Tiles.get(Board_Tiles.size()-1);
         Board_Tiles.remove(Board_Tiles.size()-1);
-        players[(game_tour-1)%4].playerTiles[14]=t;
+        players[currentPlayerIndex].playerTiles[14]=t;
         return t.toString();
     }
 
@@ -116,10 +116,13 @@ public class OkeyGame {
      * for this simplified version
      */
     public boolean didGameFinish() {
-        /* 
+        this.currentPlayerIndex+=1;
+        this.currentPlayerIndex=this.currentPlayerIndex%4;
+        
+        
         int[] chain=new int[14];
         int[] chain_nums=new int[3];
-        chain=players[(game_tour-1)%4].calculateLongestChainPerTile();
+        chain=players[currentPlayerIndex].calculateLongestChainPerTile();
         for(int i=0;i<14;i++){
              if(chain[i]>=5){
                 chain_nums[0]++;
@@ -141,8 +144,8 @@ public class OkeyGame {
         else{
             return false;
         }
-        */
-        return false;
+        
+        
     }
 
     /*
@@ -161,6 +164,7 @@ public class OkeyGame {
         else{
             getLastDiscardedTile();
         }
+        System.out.println(players[currentPlayerIndex].playerTiles[14]);
     }
 
     /*
@@ -172,45 +176,18 @@ public class OkeyGame {
      * known by other players
      */
     public void discardTileForComputer() {
-        boolean e1=false;
-        boolean e2=false;
-        for(int i=0;i<15;i++){
-            for(int k=i+1;k<15;k++){
-                if(players[(game_tour-1)%4].playerTiles[i].equals(players[(game_tour-1)%4].playerTiles[k])){
-                    discarted_index=i;
-                    lastDiscardedTile=players[(game_tour-1)%4].playerTiles[discarted_index];
-                    players[(game_tour-1)%4].playerTiles[i]=players[(game_tour-1)%4].playerTiles[14];
-                    e1=true;
-                    break;
-                }
-            }
-            if(e1==true){
-                break;
+        int min=41;
+        int min_index=41;
+        for(int i=0;i<14;i++){
+            if(min>players[currentPlayerIndex].findLongestChainOf(players[currentPlayerIndex].playerTiles[i])){
+                min=players[currentPlayerIndex].findLongestChainOf(players[currentPlayerIndex].playerTiles[i]);
+                min_index=i;
             }
         }
-        if(e1==false){
-            for(int i=0;i<15;i++){
-                for(int k=i+1;k<15;k++){
-                    if(players[(game_tour-1)%4].playerTiles[i].canFormChainWith(players[(game_tour-1)%4].playerTiles[k])==0){
-                        discarted_index=i;
-                        lastDiscardedTile=players[(game_tour-1)%4].playerTiles[discarted_index];
-                        players[(game_tour-1)%4].playerTiles[i]=players[(game_tour-1)%4].playerTiles[14];
-                        e2=true;
-                        break;
-                    }
-                }
-                if(e2=true){
-                    break;
-                }
-            }   
-        }
-        else if(e2==false){
-            Random r= new Random();
-            int rn=r.nextInt(14);
-            discarted_index=rn;
-            lastDiscardedTile=players[(game_tour-1)%4].playerTiles[discarted_index];
-            players[(game_tour-1)%4].playerTiles[rn]=players[(game_tour-1)%4].playerTiles[14];
-        }
+        discarted_index=min_index;
+        lastDiscardedTile=players[currentPlayerIndex].playerTiles[discarted_index];
+        players[currentPlayerIndex].playerTiles[min_index]=players[currentPlayerIndex].playerTiles[14];
+        players[currentPlayerIndex].playerTiles[14]=null;
     }
 
     /*
@@ -219,10 +196,11 @@ public class OkeyGame {
      * that player's tiles
      */
     public void discardTile(int tileIndex) {
-        this.game_tour++;
+
         discarted_index=tileIndex;
         lastDiscardedTile=players[0].playerTiles[discarted_index];
-        players[(game_tour-1)%4].playerTiles[tileIndex]=players[(game_tour-1)%4].playerTiles[14];
+        players[0].playerTiles[tileIndex]=players[0].playerTiles[14];
+        players[0].playerTiles[14]=null;
     }
 
     public void currentPlayerSortTilesColorFirst() {
@@ -244,6 +222,8 @@ public class OkeyGame {
     }
 
     public int getCurrentPlayerIndex() {
+        currentPlayerIndex+=1;
+        currentPlayerIndex=currentPlayerIndex%4;
         return currentPlayerIndex;
     }
 
